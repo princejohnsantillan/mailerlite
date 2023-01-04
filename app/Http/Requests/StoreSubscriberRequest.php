@@ -25,7 +25,7 @@ class StoreSubscriberRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email:rfc,dns',
+            'email' => 'required|unique:subscribers|email:rfc,dns',
             'name' => 'required',
             'state' => ['required', new ValidSubscriberState()],
         ];

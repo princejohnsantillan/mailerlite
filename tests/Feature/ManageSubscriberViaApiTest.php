@@ -2,16 +2,22 @@
 
 namespace Tests\Feature;
 
-use App\Http\Resources\SubscriberResource;
-use App\Models\Enums\SubscriberState;
-use App\Models\Subscriber;
 use Tests\TestCase;
+use App\Models\Subscriber;
+use Database\Seeders\DatabaseSeeder;
+use App\Models\Enums\SubscriberState;
+use App\Http\Resources\SubscriberResource;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ManageSubscriberViaApiTest extends TestCase
 {
+    use RefreshDatabase;
+
     /** @test */
     public function it_shows_a_list_of_subscribers()
     {
+        (new DatabaseSeeder())->run();
+
         $response = $this->getJson('api/subscriber');
 
         $this->assertEquals(count($response['data']), Subscriber::query()->count());

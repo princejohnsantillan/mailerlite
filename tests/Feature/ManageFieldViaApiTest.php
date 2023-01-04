@@ -5,19 +5,26 @@ namespace Tests\Feature;
 use App\Http\Resources\FieldResource;
 use App\Models\Enums\FieldType;
 use App\Models\Field;
+use Database\Seeders\DatabaseSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ManageFieldViaApiTest extends TestCase
 {
+    use RefreshDatabase;
+
     /** @test */
     public function it_shows_a_list_of_fields()
     {
+        (new DatabaseSeeder())->run();
+
         $response = $this->getJson('api/field');
 
         $this->assertEquals(count($response['data']), Field::query()->count());
         $this->assertArrayHasKey('id', $response['data'][0]);
         $this->assertArrayHasKey('title', $response['data'][0]);
         $this->assertArrayHasKey('type', $response['data'][0]);
+        $this->assertArrayHasKey('subscribers', $response['data'][0]);
     }
 
     /** @test */

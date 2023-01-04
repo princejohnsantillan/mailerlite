@@ -25,7 +25,7 @@ class StoreFieldRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required',
+            'title' => 'required|unique:fields',
             'type' => ['required', new ValidFieldType()],
         ];
     }

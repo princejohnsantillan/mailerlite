@@ -25,7 +25,7 @@ class UpdateSubscriberRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'email:rfc,dns',
+            'email' => 'unique:subscribers|email:rfc,dns',
             'state' => [new ValidSubscriberState()],
         ];
     }
