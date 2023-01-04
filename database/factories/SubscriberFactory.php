@@ -19,8 +19,10 @@ class SubscriberFactory extends Factory
     {
         $first = $this->faker->firstName();
         $last = $this->faker->lastName();
-        $name = str("{$first}_{$last}")->lower()->replaceMatches('/[^a-z0-9_]/', '');
+        $uid = uniqid();
+        $name = str("{$first}_{$last}_$uid")->lower()->replaceMatches('/[^a-z0-9_]/', '');
         $domain = $this->faker->freeEmailDomain();
+
         return [
             'email' => "$name@$domain",
             'name' => "$first $last",

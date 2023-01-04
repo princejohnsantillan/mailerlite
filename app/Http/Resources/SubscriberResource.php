@@ -19,7 +19,7 @@ class SubscriberResource extends JsonResource
             'email' => $this->email,
             'name' => $this->name,
             'state' => $this->state->value,
-            'fields' => $this->fields->pluck('pivot.value', 'title')->toArray()
+            'fields' => $this->fields->pluck('pivot.value', 'title')->toArray(),
         ];
     }
 }

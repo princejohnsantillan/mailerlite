@@ -28,6 +28,8 @@ class StoreSubscriberRequest extends FormRequest
             'email' => 'required|unique:subscribers|email:rfc,dns',
             'name' => 'required',
             'state' => ['required', new ValidSubscriberState()],
+            'fields.*.id' => 'exists:fields',
+            'fields.*.value' => 'sometimes|required',
         ];
     }
 }

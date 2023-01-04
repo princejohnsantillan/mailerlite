@@ -6,6 +6,8 @@ use App\Http\Requests\StoreSubscriberRequest;
 use App\Http\Requests\UpdateSubscriberRequest;
 use App\Http\Resources\SubscriberResource;
 use App\Models\Subscriber;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 class SubscriberController extends Controller
 {
@@ -30,6 +32,18 @@ class SubscriberController extends Controller
         $data = $request->validated();
 
         $subscriber = Subscriber::query()->create($data);
+
+        if (Arr::has($data, 'fields')) {
+            $fieldValues = collect(data_get($data, 'fields'))
+                ->map(
+                    fn ($field) => [
+                        'subscriber_id' => $subscriber->id,
+                        'field_id' => $field['id'],
+                        'value' => $field['value'],
+                    ]
+                )->toArray();
+            DB::table('field_subscriber')->insert($fieldValues);
+        }
 
         return response()->json(['subscriber' => $subscriber]);
     }

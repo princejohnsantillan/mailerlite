@@ -18,7 +18,7 @@ class FieldResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'type' => $this->type->value,
-            'subscribers' => $this->subscribers->pluck('email', 'id')->toArray()
+            'subscribers' => $this->subscribers->pluck('email', 'id')->toArray(),
         ];
     }
 }
