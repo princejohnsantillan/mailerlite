@@ -16,9 +16,23 @@ export function useFieldsStore() {
         loadFields()
     }
 
+    const addField = async (title, type) => {
+        await fetch('api/field', {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({ "title": title, "type": type })
+        });
+
+        loadFields()
+    }
+
     return {
         loadFields,
         deleteField,
+        addField,
         fields
     }
 }

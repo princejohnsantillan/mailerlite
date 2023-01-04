@@ -1,6 +1,6 @@
 <template>
     <TransitionRoot as="template" :show="open">
-        <Dialog as="div" class="relative z-10" @close="$emit('update:open', false)">
+        <Dialog as="div" class="relative z-10" @close="closeModal">
             <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0" enter-to="opacity-100"
                 leave="ease-in duration-200" leave-from="opacity-100" leave-to="opacity-0">
                 <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
@@ -19,7 +19,8 @@
                                 <div>
                                     <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
                                     <div class="mt-1">
-                                        <input id="name" name="name" type="text" autocomplete="name" required=""
+                                        <input v-model="name" id="name" name="name" type="text" autocomplete="name"
+                                            required=""
                                             class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
                                     </div>
                                 </div>
@@ -28,26 +29,27 @@
                                     <label for="email" class="block text-sm font-medium text-gray-700">Email
                                         address</label>
                                     <div class="mt-1">
-                                        <input id="email" name="email" type="email" autocomplete="email" required=""
+                                        <input v-model="email" id="email" name="email" type="email" autocomplete="email"
+                                            required=""
                                             class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
                                     </div>
                                 </div>
 
                                 <div>
                                     <label for="state" class="block text-sm font-medium text-gray-700">State</label>
-                                    <select id="state" name="state"
+                                    <select v-model="state" id="state" name="state"
                                         class="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
-                                        <option>Active</option>
-                                        <option>Unsubscribed</option>
-                                        <option>Junk</option>
-                                        <option>Bounced</option>
-                                        <option>Unconfirmed</option>
+                                        <option value="active">Active</option>
+                                        <option value="unsubscribed">Unsubscribed</option>
+                                        <option value="junk">Junk</option>
+                                        <option value="bounced">Bounced</option>
+                                        <option value="unconfirmed">Unconfirmed</option>
                                     </select>
                                 </div>
 
 
                                 <div>
-                                    <button type="submit"
+                                    <button type="submit" @click.prevent="addSubscriberFunction"
                                         class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Add
                                         Subscriber</button>
                                 </div>
@@ -55,7 +57,7 @@
                             <div class="mt-5 sm:mt-6">
                                 <button type="button"
                                     class="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:text-sm"
-                                    @click="$emit('update:open', false)">Go back to dashboard</button>
+                                    @click="closeModal">Go back to dashboard</button>
                             </div>
                         </DialogPanel>
                     </TransitionChild>
@@ -67,9 +69,25 @@
 
 <script setup>
 
-import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
-import { CheckIcon } from '@heroicons/vue/24/outline'
+import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
+import { ref } from 'vue';
+import { useSubscriberStore } from '../stores/SubscriberStore';
 
 defineProps(['open'])
-defineEmits(['update:open'])
+const emit = defineEmits(['update:open'])
+
+const { addSubscriber } = useSubscriberStore()
+const name = ref("")
+const email = ref("")
+const state = ref("")
+
+const closeModal = () => {
+    emit('update:open', false)
+}
+const addSubscriberFunction = () => {
+    closeModal()
+
+    addSubscriber(name.value, email.value, state.value)
+}
+
 </script>

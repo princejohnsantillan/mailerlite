@@ -16,9 +16,23 @@ export function useSubscriberStore() {
         loadSubscribers()
     }
 
+    const addSubscriber = async (name, email, state) => {
+        await fetch('api/subscriber', {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({ "name": name, "email": email, "state": state })
+        });
+
+        loadSubscribers()
+    }
+
     return {
         loadSubscribers,
         deleteSubscriber,
+        addSubscriber,
         subscribers
     }
 }

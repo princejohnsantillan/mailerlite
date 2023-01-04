@@ -30,9 +30,9 @@
                                     </td>
                                     <td
                                         class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                                        <a href="#" class="text-indigo-600 mx-1 hover:text-indigo-900">
+                                        <!-- <a href="#" class="text-indigo-600 mx-1 hover:text-indigo-900">
                                             <PencilSquareIcon class="h-5 w-5 inline" />
-                                        </a>
+                                        </a> -->
                                         <a href="#" @click="deleteField(field.id)"
                                             class="text-red-600 mx-1 hover:text-red-900">
                                             <TrashIcon class="h-5 w-5 inline" />
