@@ -48,7 +48,6 @@
                                     </select>
                                 </div>
 
-
                                 <div>
                                     <button type="submit" @click.prevent="upsertSubscriber"
                                         class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
@@ -71,10 +70,9 @@
 </template>
 
 <script setup>
-
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
-import { ref } from 'vue';
-import { useSubscriberStore } from '../stores/SubscriberStore';
+import { ref } from 'vue'
+import { useSubscriberStore } from '../stores/SubscriberStore'
 
 const props = defineProps(['open', 'subscriber'])
 const emit = defineEmits(['update:open', 'update:subscriber'])
@@ -108,11 +106,11 @@ const upsertSubscriber = () => {
     } else {
         addSubscriber(props.subscriber.name, props.subscriber.email, props.subscriber.state)
     }
-}
-const addSubscriberFunction = () => {
-    closeModal()
 
-    addSubscriber(name.value, email.value, state.value)
+    props.subscriber.id = null;
+    props.subscriber.name = '';
+    props.subscriber.email = '';
+    props.subscriber.state = '';
 }
 
 </script>

@@ -13,5 +13,4 @@
 const props = defineProps({
     label: String
 })
-
 </script>

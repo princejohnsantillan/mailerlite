@@ -27,14 +27,11 @@
                                     </div>
                                 </div>
 
-
-
                                 <div>
                                     <button type="submit" @click.prevent="saveFields"
                                         class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                                         Save</button>
                                 </div>
-
                             </form>
                             <div class="mt-5 sm:mt-6">
                                 <button type="button"
@@ -50,18 +47,15 @@
 </template>
 
 <script setup>
-
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { useSubscriberStore } from '../stores/SubscriberStore';
-
 import { useFieldsStore } from "./../stores/FieldsStore.js"
 
 const props = defineProps(['open', 'fields', 'subscriber'])
 const emit = defineEmits(['update:open', 'update:fields'])
 
-const { fields: fieldsList } = useFieldsStore();
-const { saveSubscriberFields } = useSubscriberStore();
-
+const { fields: fieldsList } = useFieldsStore()
+const { saveSubscriberFields } = useSubscriberStore()
 
 const closeModal = () => {
     emit('update:open', false)
@@ -88,5 +82,4 @@ const saveFields = () => {
 
     saveSubscriberFields(props.subscriber, newFields)
 }
-
 </script>

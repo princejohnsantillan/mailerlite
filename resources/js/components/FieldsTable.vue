@@ -1,6 +1,5 @@
 <template>
     <div class="px-4 sm:px-6 lg:px-8">
-
         <div class="mt-8 flex flex-col">
             <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
@@ -38,7 +37,6 @@
                                             class="text-red-600 mx-1 hover:text-red-900">
                                             <TrashIcon class="h-5 w-5 inline" />
                                         </a>
-
                                     </td>
                                 </tr>
                             </tbody>
@@ -57,12 +55,12 @@ import { useFieldsStore } from "./../stores/FieldsStore.js"
 import UpsertFieldModal from './UpsertFieldModal.vue'
 import { ref } from "vue"
 
-const emptyField = { id: null, title: '', type: '' };
+const { fields, loadFields, deleteField } = useFieldsStore()
+
+const emptyField = ref({ id: null, title: '', type: '' })
 
 const modalIsOpen = ref(false)
-const modalField = ref(emptyField)
-
-const { fields, loadFields, deleteField } = useFieldsStore();
+const modalField = ref(emptyField.value)
 
 const openUpsertModal = (field) => {
     modalField.value = field

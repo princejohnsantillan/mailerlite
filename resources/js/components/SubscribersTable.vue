@@ -1,6 +1,5 @@
 <template>
     <div class="px-4 sm:px-6 lg:px-8">
-
         <div class="mt-8 flex flex-col">
             <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
@@ -72,16 +71,16 @@ import { useSubscriberStore } from "./../stores/SubscriberStore.js"
 import UpsertSubscriberModal from './UpsertSubscriberModal.vue';
 import FieldsModal from './FieldsModal.vue'
 
-const emptySubscriber = { id: null, name: '', email: '', state: '' };
+const { subscribers, loadSubscribers, deleteSubscriber } = useSubscriberStore();
+
+const emptySubscriber = { id: null, name: '', email: '', state: '' }
 
 const subscriberModalIsOpen = ref(false);
 const modalSubscriber = ref(emptySubscriber);
 
-const fieldsModalIsOpen = ref(false);
-const modalFields = ref(emptySubscriber);
-const modalFieldsSubscriber = ref(null);
-
-const { subscribers, loadSubscribers, deleteSubscriber } = useSubscriberStore();
+const fieldsModalIsOpen = ref(false)
+const modalFields = ref([])
+const modalFieldsSubscriber = ref(null)
 
 const openUpsertModal = (subscriber) => {
     modalSubscriber.value = subscriber
