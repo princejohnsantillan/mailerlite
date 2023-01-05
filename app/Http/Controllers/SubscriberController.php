@@ -81,7 +81,7 @@ class SubscriberController extends Controller
                         'value' => $field['value'],
                     ]
                 )->toArray();
-            DB::table('field_subscriber')->insert($fieldValues);
+            DB::table('field_subscriber')->upsert($fieldValues, ['subscriber_id', 'field_id'], ['value']);
         }
 
         return response()->json(['status' => $status]);

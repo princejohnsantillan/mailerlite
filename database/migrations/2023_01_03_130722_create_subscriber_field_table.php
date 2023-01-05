@@ -17,8 +17,9 @@ return new class() extends Migration
     {
         Schema::create('field_subscriber', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Subscriber::class);
-            $table->foreignIdFor(Field::class);
+            $table->unique(['subscriber_id', 'field_id']);
+            $table->foreignIdFor(Subscriber::class)->cascadeOnDelete();
+            $table->foreignIdFor(Field::class)->cascadeOnDelete();
             $table->string('value');
             $table->timestamps();
         });
