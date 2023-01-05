@@ -25,7 +25,7 @@ class UpdateFieldRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'unique:fields',
+            'title' => 'sometimes',
             'type' => [new ValidFieldType()],
         ];
     }

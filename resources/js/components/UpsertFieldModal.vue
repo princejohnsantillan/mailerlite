@@ -19,15 +19,16 @@
                                 <div>
                                     <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
                                     <div class="mt-1">
-                                        <input v-model="title" id="title" name="title" type="text" autocomplete="email"
-                                            required=""
+                                        <input :value="field.title" id="title" name="title" type="text"
+                                            @input="updateTitle($event.target.value)" autocomplete="email" required=""
                                             class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
                                     </div>
                                 </div>
 
                                 <div>
                                     <label for="type" class="block text-sm font-medium text-gray-700">Type</label>
-                                    <select v-model="type" id="type" name="type"
+                                    <select :value="field.type" id="type" name="type"
+                                        @input="updateType($event.target.value)"
                                         class="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
                                         <option value="date">Date</option>
                                         <option value="number">Number</option>
@@ -38,10 +39,12 @@
 
 
                                 <div>
-                                    <button type="submit" @click.prevent="addFieldFunction"
-                                        class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Add
+                                    <button type="submit" @click.prevent="upsertField"
+                                        class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                        {{ field.id === null ? 'Add ' : 'Update' }}
                                         Field</button>
                                 </div>
+                                <input type="hidden" :value="field.id" />
                             </form>
                             <div class="mt-5 sm:mt-6">
                                 <button type="button"
@@ -59,25 +62,37 @@
 <script setup>
 
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
-import { ref } from 'vue';
-import { useFieldsStore } from './../stores/FieldsStore.js'
 
-defineProps(['open'])
-const emit = defineEmits(['update:open'])
+import { useFieldsStore } from '../stores/FieldsStore.js'
 
-const title = ref("")
-const type = ref("")
+const props = defineProps(['open', 'field'])
+const emit = defineEmits(['update:open', 'update:field'])
 
-const { addField } = useFieldsStore()
-
+const { addField, updateField } = useFieldsStore()
 
 const closeModal = () => {
     emit('update:open', false)
 }
-const addFieldFunction = () => {
+
+const updateTitle = (value) => {
+    props.field.title = value
+    emit('update:field', props.field)
+}
+
+const updateType = (value) => {
+    props.field.type = value
+    emit('update:field', props.field)
+}
+
+const upsertField = () => {
     closeModal()
 
-    addField(title.value, type.value)
+    if (props.field.id !== null) {
+        updateField(props.field)
+    } else {
+
+        addField(props.field.title, props.field.type)
+    }
 }
 
 </script>

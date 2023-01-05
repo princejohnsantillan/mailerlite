@@ -16,7 +16,8 @@
                                     <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
                                         <button type="button"
                                             class="inline-flex items-center rounded-full border border-transparent bg-indigo-600 p-1 text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                                            <PlusIcon @click="$emit('add')" class="h-5 w-5" aria-hidden="true" />
+                                            <PlusIcon @click="openUpsertModal(emptyField)" class="h-5 w-5"
+                                                aria-hidden="true" />
                                         </button>
                                     </th>
                                 </tr>
@@ -30,9 +31,9 @@
                                     </td>
                                     <td
                                         class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                                        <!-- <a href="#" class="text-indigo-600 mx-1 hover:text-indigo-900">
-                                            <PencilSquareIcon class="h-5 w-5 inline" />
-                                        </a> -->
+                                        <a href="#" class="text-indigo-600 mx-1 hover:text-indigo-900">
+                                            <PencilSquareIcon class="h-5 w-5 inline" @click="openUpsertModal(field)" />
+                                        </a>
                                         <a href="#" @click="deleteField(field.id)"
                                             class="text-red-600 mx-1 hover:text-red-900">
                                             <TrashIcon class="h-5 w-5 inline" />
@@ -47,17 +48,26 @@
             </div>
         </div>
     </div>
+    <UpsertFieldModal v-model:open="openModal" v-model:field="modalField" />
 </template>
 
 <script setup>
 import { PlusIcon, TrashIcon, PencilSquareIcon } from '@heroicons/vue/20/solid'
-
-
 import { useFieldsStore } from "./../stores/FieldsStore.js"
+import UpsertFieldModal from './UpsertFieldModal.vue'
+import { ref } from "vue"
 
-defineEmits(['add'])
+const emptyField = { id: null, title: '', type: '' };
+
+const openModal = ref(false)
+const modalField = ref(emptyField)
 
 const { fields, loadFields, deleteField } = useFieldsStore();
+
+const openUpsertModal = (field) => {
+    modalField.value = field
+    openModal.value = true
+}
 
 loadFields()
 </script>

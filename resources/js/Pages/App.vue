@@ -13,7 +13,7 @@
 
                                 <div class="p-6">
                                     <Divider label="Subscribers" />
-                                    <SubscribersTable @add="openAddSubscriberModal = true" />
+                                    <SubscribersTable />
                                 </div>
                             </div>
                         </section>
@@ -26,7 +26,7 @@
                             <div class="overflow-hidden rounded-lg bg-white shadow">
                                 <div class="p-6">
                                     <Divider label="Fields" />
-                                    <FieldsTable @add="openAddFieldModal = true" />
+                                    <FieldsTable />
                                 </div>
                             </div>
                         </section>
@@ -35,19 +35,15 @@
             </div>
         </main>
     </div>
-    <AddSubscriberModal v-model:open="openAddSubscriberModal" />
-    <AddFieldModal v-model:open="openAddFieldModal" />
+
 </template>
 
 <script setup>
 import { ref } from "vue";
-import AddSubscriberModal from "../components/AddSubscriberModal.vue"
-import AddFieldModal from "../components/AddFieldModal.vue"
+
 import Divider from "../components/Divider.vue"
 import FieldsTable from "../components/FieldsTable.vue"
 import SubscribersTable from "../components/SubscribersTable.vue"
 
-const openAddSubscriberModal = ref(false)
-const openAddFieldModal = ref(false)
 
 </script>

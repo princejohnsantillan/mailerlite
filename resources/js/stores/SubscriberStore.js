@@ -29,10 +29,24 @@ export function useSubscriberStore() {
         loadSubscribers()
     }
 
+    const updateSubscriber = async (subscriber) => {
+        await fetch(`api/subscriber/${subscriber.id}`, {
+            method: "PATCH",
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({ "name": subscriber.name, "email": subscriber.email, "state": subscriber.state })
+        });
+
+        loadSubscribers()
+    }
+
     return {
         loadSubscribers,
         deleteSubscriber,
         addSubscriber,
+        updateSubscriber,
         subscribers
     }
 }

@@ -29,10 +29,24 @@ export function useFieldsStore() {
         loadFields()
     }
 
+    const updateField = async (field) => {
+        await fetch(`api/field/${field.id}`, {
+            method: "PATCH",
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({ "title": field.title, "type": field.type })
+        });
+
+        loadFields()
+    }
+
     return {
         loadFields,
         deleteField,
         addField,
+        updateField,
         fields
     }
 }
