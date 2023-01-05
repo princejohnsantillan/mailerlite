@@ -28,6 +28,8 @@ class UpdateSubscriberRequest extends FormRequest
             'name' => 'sometimes',
             'email' => 'email:rfc,dns',
             'state' => [new ValidSubscriberState()],
+            'fields.*.id' => 'exists:fields',
+            'fields.*.value' => 'sometimes|required',
         ];
     }
 }

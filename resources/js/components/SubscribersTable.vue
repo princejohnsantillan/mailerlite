@@ -15,6 +15,8 @@
                                         Email</th>
                                     <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                                         State</th>
+                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                                        Fields</th>
                                     <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
                                         <button type="button"
                                             class="inline-flex items-center rounded-full border border-transparent bg-indigo-600 p-1 text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
@@ -32,6 +34,12 @@
                                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ subscriber.email }}
                                     </td>
                                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ subscriber.state }}
+                                    </td>
+                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                        <a href="#" @click="openFieldsModal(subscriber)"
+                                            class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">{{
+                                                Object.keys(subscriber.fields).length
+                                            }}</a>
                                     </td>
                                     <td
                                         class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
@@ -53,7 +61,8 @@
         </div>
     </div>
 
-    <UpsertSubscriberModal v-model:open="openModal" v-model:subscriber="modalSubscriber" />
+    <UpsertSubscriberModal v-model:open="subscriberModalIsOpen" v-model:subscriber="modalSubscriber" />
+    <FieldsModal v-model:open="fieldsModalIsOpen" v-model:fields="modalFields" :subscriber="modalFieldsSubscriber" />
 </template>
 
 <script setup>
@@ -61,17 +70,28 @@ import { PlusIcon, TrashIcon, PencilSquareIcon } from '@heroicons/vue/20/solid'
 import { ref } from 'vue';
 import { useSubscriberStore } from "./../stores/SubscriberStore.js"
 import UpsertSubscriberModal from './UpsertSubscriberModal.vue';
+import FieldsModal from './FieldsModal.vue'
 
 const emptySubscriber = { id: null, name: '', email: '', state: '' };
 
-const openModal = ref(false);
+const subscriberModalIsOpen = ref(false);
 const modalSubscriber = ref(emptySubscriber);
+
+const fieldsModalIsOpen = ref(false);
+const modalFields = ref(emptySubscriber);
+const modalFieldsSubscriber = ref(null);
 
 const { subscribers, loadSubscribers, deleteSubscriber } = useSubscriberStore();
 
 const openUpsertModal = (subscriber) => {
     modalSubscriber.value = subscriber
-    openModal.value = true
+    subscriberModalIsOpen.value = true
+}
+
+const openFieldsModal = (subscriber) => {
+    modalFieldsSubscriber.value = subscriber.id
+    modalFields.value = subscriber.fields
+    fieldsModalIsOpen.value = true
 }
 
 loadSubscribers()

@@ -72,6 +72,18 @@ class SubscriberController extends Controller
 
         $status = $subscriber->update($data);
 
+        if (Arr::has($data, 'fields')) {
+            $fieldValues = collect(data_get($data, 'fields'))
+                ->map(
+                    fn ($field) => [
+                        'subscriber_id' => $subscriber->id,
+                        'field_id' => $field['id'],
+                        'value' => $field['value'],
+                    ]
+                )->toArray();
+            DB::table('field_subscriber')->insert($fieldValues);
+        }
+
         return response()->json(['status' => $status]);
     }
 

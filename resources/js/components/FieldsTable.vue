@@ -48,7 +48,7 @@
             </div>
         </div>
     </div>
-    <UpsertFieldModal v-model:open="openModal" v-model:field="modalField" />
+    <UpsertFieldModal v-model:open="modalIsOpen" v-model:field="modalField" />
 </template>
 
 <script setup>
@@ -59,14 +59,14 @@ import { ref } from "vue"
 
 const emptyField = { id: null, title: '', type: '' };
 
-const openModal = ref(false)
+const modalIsOpen = ref(false)
 const modalField = ref(emptyField)
 
 const { fields, loadFields, deleteField } = useFieldsStore();
 
 const openUpsertModal = (field) => {
     modalField.value = field
-    openModal.value = true
+    modalIsOpen.value = true
 }
 
 loadFields()
